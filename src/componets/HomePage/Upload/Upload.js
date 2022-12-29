@@ -28,7 +28,7 @@ const Upload = () => {
                 }
                 console.log(upload);
 
-                fetch('http://localhost:5000/uploading',{
+                fetch('https://social-media-server-gilt.vercel.app/uploading',{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',

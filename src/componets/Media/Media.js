@@ -7,7 +7,7 @@ const Media = () => {
     const {data: mediaCards, refetch }= useQuery({
         queryKey:['mediaCards'],
         queryFn: async()=>{
-            const rest = await fetch('http://localhost:5000/medialPost') 
+            const rest = await fetch('https://social-media-server-gilt.vercel.app/medialPost') 
             const data = await rest.json()
             return data; 
         }
@@ -22,6 +22,7 @@ const Media = () => {
                         key={mediaCard.id}
                         mediaCard={mediaCard}
                         refetch={refetch}
+                        
                     ></MediaCard>)
                 }
            </div>

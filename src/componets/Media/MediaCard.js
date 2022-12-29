@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { HiHandThumbUp, HiOutlineHeart, IconName } from "react-icons/hi2";
 import MediaCardModal from './MediaCardModal';
 
-const MediaCard = ({ mediaCard ,refetch}) => {
-    console.log(mediaCard);
-    const { message, image
-}= mediaCard;
+const MediaCard = ({ mediaCard, refetch }) => {
+    
+    const { message, image, _id, loveReaction } = mediaCard;
+
+    const [love, setLove] = useState(loveReaction > 1 ? loveReaction : 0+1)
+
+    const handleLove = (id)=>{
+        setLove(()=>love +1)
+        fetch(`https://social-media-server-gilt.vercel.app/loveReact?id=${id}`,{
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+
+            },
+            body: JSON.stringify({love})
+
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result);
+                refetch()
+
+            })
+
+
+    }
+    
+    
+
     return (
         <div className='py-4'>
             <div className="rounded-md border shadow-lg sm:w-96  dark:text-black">
@@ -30,10 +56,11 @@ const MediaCard = ({ mediaCard ,refetch}) => {
                 <div className="p-3">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                            <button type="button" title="Like post" className="flex items-center justify-center">
+                            <button onClick={()=> handleLove(_id)} type="button" title="Like post" className="flex items-center justify-center">
                                 <h2 className='text-2xl font-bold text-rose-700 '><HiOutlineHeart className=''></HiOutlineHeart></h2>
+                                <h2>{loveReaction}</h2>
                             </button>
-                            <button htmlFor="details-modal" type="button" title="Add a comment" className="flex items-center justify-center">
+                            <button  htmlFor="details-modal" type="button" title="Add a comment" className="flex items-center justify-center">
                                 <h2 className='text-2xl text-blue-600'><HiHandThumbUp></HiHandThumbUp></h2>
                             </button>
                             {/* <label htmlFor="details-modal" className="btn">open modal</label> */}
@@ -60,7 +87,7 @@ const MediaCard = ({ mediaCard ,refetch}) => {
                     </div>
                 </div>
             </div>
-            <MediaCardModal></MediaCardModal>
+            {/* <MediaCardModal></MediaCardModal> */}
         </div>
     );
 };
